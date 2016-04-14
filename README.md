@@ -1,5 +1,9 @@
 [![cover](images/cover.png)](SUMMARY.md)
 
+> This is the Traditional Chinese translation of *[mostly-adequate-guide](https://github.com/DrBoolean/mostly-adequate-guide)*, thank Professor [Franklin Risby](https://github.com/DrBoolean) for his great work!
+
+> 本文中文翻譯參考了 [JS函数式编程指南中文版](https://github.com/llh911001/mostly-adequate-guide-chinese)，若你喜歡本書也歡迎給該 Repo 一顆 star！
+
 ## 關於本書
 
 此書主題為 functional 模式。我們將使用世界上最熱門的 functional programming 語言：JavaScript 來講述此主題。有些人可以認為這個選擇並不明智，因為目前的主流觀點認為他是一個命令式（imperative）的語言，並不適合用來講述 functional。但我認為這是學習 FP 最好的方式，有幾點原因：
