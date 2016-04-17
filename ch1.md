@@ -1,22 +1,22 @@
-# Chapter 1: What ever are we doing?
+# 第一章：我們在做些什麼？
 
-## Introductions
+## 簡介
 
-Hi! I'm Professor Franklin Risby. Pleased to make your acquaintance. We'll be spending some time together, as I'm supposed to teach you a bit about functional programming. But enough about me, what about you? I'm hoping you're familiar with the JavaScript language, have a teensy bit of Object-Oriented experience, and fancy yourself a working class programmer. You don't need to have a Ph.D in Entomology, you just need to know how to find and kill some bugs.
+嗨！我是 Franklin Risby 教授，很高興認識你。接下來我們將共度一段時光，因為我要教你一些 functional programming 的知識。關於我就到此為止，那麼你呢？我希望你已經熟悉了 JavaScript 語言，關於物件導向也有一些經驗，而且自認為是一名合格的程式設計師。你並不需要擁有昆蟲學博士學位，你只需要知道如何找到並殺死一些 bugs。
 
-I won't assume any previous functional programming knowledge, because we both know what happens when you assume. I will, however, expect you to have run into some of the unfavorable situations that arise from working with mutable state, unrestricted side effects, and unprincipled design. Now that we've been properly introduced, let's get on with it.
+我不假設你之前有任何 functional programming 的知識，我們都知道假設的後果是什麼。但我猜想你在使用可變狀態（mutable state）、不受限的副作用（unrestricted side effects）及無原則設計（unprincipled design）的過程中已經遇過一些麻煩。現在我們已經介紹的差不多了，接著讓我們切入正題吧。
 
-The purpose of this chapter is to give you a feel for what we're after when we write functional programs. We must have some idea about what makes a program *functional* or we'll find ourselves scribbling aimlessly, avoiding objects at all costs - a clumsy endeavor indeed. We need a bullseye to hurl our code toward, some celestial compass for when the waters get rough.
+本章節的目的是讓你了解為何我們要撰寫 functional 的程式。我們必須了解為何讓讓一個程式 *functional*，否則我們會發現自己漫無目的的避免使用物件－無疑是在做白工。寫程式時需要遵照一定的原則，就像在《激戰》遊戲中當水變成石頭時你需要天國羅盤來指引。
 
-Now, there are some general programming principles - various acronymic credos that guide us through the dark tunnels of any application: DRY (don't repeat yourself), YAGNI (ya ain't gonna need it), loose coupling high cohesion, principle of least surprise, single responsibility, and so on.
+現在已經有一些通用的程式開發原則－各種縮寫詞帶領我們在應用程式的黑暗隧道中前進：DRY（don't repeat yourself，不重複程式），YAGNI（ya ain't gonna need it，你不會需要它），高內聚低耦合（loose coupling high cohesion），最少意外原則（principle of least surprise），單一責任原則（single responsibility）等等。
 
-I won't belabor listing each and every guideline I've heard throughout the years... the point is that they hold up in a functional setting, though they're merely tangential to our goal. What I'd like you to get a feel for now, before we get any further, is our intention when we poke and prod at the keyboard; our functional Xanadu.
+我當然不會囉唆的把這些年我所聽到的原則都列舉出來⋯重點是這些原則都適用於 functional 的情況，只是它們與我們的目的不太有關係。在我們深入主題前，我想先讓你有一種感覺，當你在敲打鍵盤時內心就能強烈感受到 functional 的氛圍。
 
 <!--BREAK-->
 
-## A brief encounter
+## 相見恨晚
 
-Let's start with a touch of insanity. Here is a seagull application. When flocks conjoin they become a larger flock, and when they breed, they increase by the number of seagulls with whom they're breeding. Now, this is not intended to be good Object-Oriented code, mind you, it is here to highlight the perils of our modern, assignment based approach. Behold:
+讓我們以一個簡單的例子開始。這是一個海鷗（seagull）的應用程式。當鳥群合併（conjoin）後牠們會變成更大的鳥群，繁殖（breed）則會增加他們的數量，所增加的數目為他們自身所繁殖出的數量。目前這不是物件導向的良好實踐，只是為了強調這種賦值方式所造成的弊端。看看吧：
 
 ```js
 var Flock = function(n) {
@@ -42,11 +42,11 @@ var result = flock_a.conjoin(flock_c)
 //=> 32
 ```
 
-Who on earth would craft such a ghastly abomination? It is unreasonably difficult to keep track of the mutating internal state. And, good heavens, the answer is even incorrect! It should have been `16`, but `flock_a` wound up permanently altered in the process. Poor `flock_a`. This is anarchy in the I.T.! This is wild animal arithmetic!
+誰的手法會寫出這麼的令人退步三舍的程式？內部的可變狀態相當的難以追蹤，而且我的天啊，答案居然還是錯的！正確答案應該是 `16`，但是因為 `flock_a` 在計算過程中被永久改變了，可憐的 `flock_a`。這是 I.T. 部門混亂的表現，非常粗暴的計算方式！
 
-If you don't understand this program, it's okay, neither do I. The point is that state and mutable values are hard to follow, even in such a small example.
+如果你看不懂這支程式，是沒關係的，因為我也看不懂。重點是狀態及可變值非常難追蹤，即使這是一個小小的範例。
 
-Let's try again with a more functional approach:
+讓我們試試另一種更 functional 的方式：
 
 ```js
 var conjoin = function(flock_x, flock_y) { return flock_x + flock_y; };
@@ -62,9 +62,9 @@ var result = conjoin(
 //=>16
 ```
 
-Well, we got the right answer this time. There's much less code. The function nesting is a tad confusing...(we'll remedy this situation in ch5). It's better, but let's dig deeper. There are benefits to calling a spade a spade. Had we done so, we might have seen we're just working with simple addition (`conjoin`) and multiplication (`breed`).
+很好，這次我們得到正確的答案。而且少了很多程式碼。不過巢狀 function 有點讓人難以理解⋯（我們會在第 5 章解決這個情形）。這種寫法更好，不過程式碼肯定是越直白越好，所以讓我們更深入探討。瞭解之後，我們會發現我們只是很簡單的進行相加（`conjoin`）及相乘（`breed`）。
 
-There's really nothing special at all about these two functions other than their names. Let's rename our custom functions to reveal their true identity.
+除了兩個 function 的名稱比較特殊外，其他沒有任何難以理解之處。讓我們重新命名這些 function 來揭曉它們的真面目。
 
 ```js
 var add = function(x, y) { return x + y; };
@@ -79,46 +79,45 @@ var result = add(
 );
 //=>16
 ```
-And with that, we gain the knowledge of the ancients:
+這麼一來，我們會發現這些只是古人所流傳下來的知識：
 
 ```js
-// associative
+// 結合率（associative）
 add(add(x, y), z) === add(x, add(y, z));
 
-// commutative
+// 交換律（commutative）
 add(x, y) === add(y, x);
 
-// identity
+// 同一律（identity）
 add(x, 0) === x;
 
-// distributive
+// 分配綠（distributive）
 multiply(x, add(y,z)) === add(multiply(x, y), multiply(x, z));
 ```
 
-Ah yes, those old faithful mathematical properties should come in handy. Don't worry if you didn't know them right off the top of your head. For a lot of us, it's been a while since we've reviewed this information. Let's see if we can use these properties to simplify our little seagull program.
+是的，這些古老又堅定的數學特性早晚會派上用場。若你一時想不起來也沒關係，大多數的人已經很久沒複習這些資訊了。讓我們看看是否能利用這些定律簡化這個海鷗程式。
 
 ```js
-// Original line
+// 原有程式碼
 add(multiply(flock_b, add(flock_a, flock_c)), multiply(flock_a, flock_b));
 
-// Apply the identity property to remove the extra add
-// (add(flock_a, flock_c) == flock_a)
+// 套用同一律來移除多餘的相加 (add(flock_a, flock_c) == flock_a)
 add(multiply(flock_b, flock_a), multiply(flock_a, flock_b));
 
-// Apply distributive property to achieve our result
+// 套用分配律來達到我們的結果
 multiply(flock_b, add(flock_a, flock_a));
 ```
 
-Brilliant! We didn't have to write a lick of custom code other than our calling function. We include `add` and `multiply` definitions here for completeness, but there is really no need to write them - we surely have an `add` and `multiply` provided by some previously written library.
+漂亮！除了呼叫的 function 外我們不必再多寫多餘的程式碼。我們定義了 `add` 及 `multiply` 只是為了完整性，但實際上我們並不需要撰寫－在某些已經寫好的 library 裡一定包含了 `add` 及 `multiply`。
 
-You may be thinking "how very strawman of you to put such a mathy example up front". Or "real programs are not this simple and cannot be reasoned about in such a way". I've chosen this example because most of us already know about addition and multiplication so it's easy to see how math can be of use to us here.
+你可能在想「你前面舉這種助學例子也太曲解論點了吧」。或者「真實的程式才不會這麼簡單，不能以這樣的方式來推斷」。我會選擇這個例子是因為大部分的人已經知道如何相加及相乘，所以這很容易讓我們發現可以在這裡使用數學。
 
-Don't despair - throughout this book, we'll sprinkle in some category theory, set theory, and lambda calculus to write real world examples that achieve the same simplicity and results as our flock of seagulls example. You needn't be a mathematician either. It will feel just like using a normal framework or API.
+別感到絕望－在本書中還會穿插一些範疇論（category theory）、集合論（set theory）及 lamdba 運算的知識，教你著寫更複雜的程式碼，而且一點也不輸本章海鷗程式的簡潔性與準確性。你也不需成為一名數學家，本書要交給你的程式設計模式實踐起來，就像是使用一個普通的框架或 API 一般。
 
-It may come as a surprise to hear that we can write full, everyday applications along the lines of the functional analog above. Programs that have sound properties. Programs that are terse, yet easy to reason about. Programs that don't reinvent the wheel at every turn. Lawlessness is good if you're a criminal, but in this book, we'll want to acknowledge and obey the laws of math.
+你也許會感到訝異，我們可以向上例那樣遵循 functional 的模式去撰寫完整且日常的應用程式，有著優異效能的程式、簡潔易推理的程式，以及不用每次都重新造輪子的程式。如果你是罪犯，那違法對你來說是件好事；但在本書中，我們希望能夠承認並遵守數學之法。
 
-We'll want to use the theory where every piece tends to fit together so politely. We'll want to represent our specific problem in terms of generic, composable bits and then exploit their properties for our own selfish benefit. It will take a bit more discipline than the "anything goes" approach of imperative programming (we'll go over the precise definition of imperative later in the book, but for now it's anything other than functional programming), but the payoff of working within a principled, mathematical framework will astound you.
+我們希望去實踐每一部份都能完美結合的理論，希望能以一種通用、可組合的元件來描述我們的特定問題，然後利用這些元件的特性來解決這些問題。對於 imperative programming（指令式程式開發，稍後本書將會介紹 imperative 的經確定義，我們暫時還是先將重點放在 functional 上）那種「某某去做某事」的方式，functional programming 將會有更多的約束，不過你會震攝於這種強約束、數學性的框架所帶來的回報。
 
-We've seen a flicker of our functional north star, but there are a few concrete concepts to grasp before we can really begin our journey.
+我們已經看到 functional 的點點星光了，但在真正開始我們的旅程之前，必須先掌握一些具體的概念。
 
-[Chapter 2: First Class Functions](ch2.md)
+[第 2 章：一等公民的函式](ch2.md)
