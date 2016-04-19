@@ -124,9 +124,9 @@ var BlogController = {
 
 ⋯或是直接全部刪掉，因為它的作用只是將 Views 與 DB 打包在一起而已。
 
-## 為何鍾愛一等公民？
+## 為何鍾愛 First Class？
 
-Okay，現在讓我們來看看鍾愛一等公民的原因為何。前面我們看過了 `getServerStuff` 與 `BlogController` 兩個例子，雖然增加一些沒有實際用途的間接層相當容易，但這樣做除了徒增加程式碼量，提高維護及查詢的成本外，沒有任何用處。
+Okay，現在讓我們來看看鍾愛 First Class 的原因為何。前面我們看過了 `getServerStuff` 與 `BlogController` 兩個例子，雖然增加一些沒有實際用途的間接層相當容易，但這樣做除了徒增加程式碼量，提高維護及查詢的成本外，沒有任何用處。
 
 此外，如果一個 function 被不必要的封裝起來，當它發生變更時，我們也必須變更封裝它的 function。
 
