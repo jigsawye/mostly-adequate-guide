@@ -3,7 +3,7 @@
 * [第 1 章：我們在做些什麼？](ch1.md)
   * [簡介](ch1.md#introductions)
   * [相見恨晚](ch1.md#a-brief-encounter)
-* [第 2 章：一等公民的 Funtcion](ch2.md)
+* [第 2 章：First Class Funtcion](ch2.md)
   * [快速導覽](ch2.md#a-quick-review)
   * [為何鍾愛一等公民？](ch2.md#why-favor-first-class)
 * [第 3 章：Pure Function－單純的幸福](ch3.md)

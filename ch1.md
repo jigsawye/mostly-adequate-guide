@@ -120,4 +120,4 @@ multiply(flock_b, add(flock_a, flock_a));
 
 我們已經看到 functional 的點點星光了，但在真正開始我們的旅程之前，必須先掌握一些具體的概念。
 
-[第 2 章：一等公民的 Function](ch2.md)
+[第 2 章：First Class Function](ch2.md)
