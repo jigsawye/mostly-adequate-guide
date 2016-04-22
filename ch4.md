@@ -1,11 +1,11 @@
-# Chapter 4: Currying
+# 第 4 章：Curry（柯里化）
 
-## Can't live if livin' is without you
-My Dad once explained how there are certain things one can live without until one acquires them. A microwave is one such thing. Smart phones, another. The older folks among us will remember a fulfilling life sans internet. For me, currying is on this list.
+## Curry 的重要性
+我爸以前跟我說過，有些東西在你得到以前是可有可無的，但得到之後就不可或缺了。微波爐、智慧型手機皆是如此。老人在沒有網路時也過得很充實。對我來說，curry 也是這樣。
 
-The concept is simple: You can call a function with fewer arguments than it expects. It returns a function that takes the remaining arguments.
+Curry 的概念很簡單：你可以只透過部分的參數呼叫一個 function，它會回傳一個 function 去處理剩下的參數。
 
-You can choose to call it all at once or simply feed in each argument piecemeal.
+你可以一次性的呼叫 curry function，也可以每次只傳遞每次只傳遞一個參數。
 
 ```js
 var add = function(x) {
@@ -24,9 +24,9 @@ addTen(2);
 // 12
 ```
 
-Here we've made a function `add` that takes one argument and returns a function. By calling it, the returned function remembers the first argument from then on via the closure. Calling it with both arguments all at once is a bit of a pain, however, so we can use a special helper function called `curry` to make defining and calling functions like this easier.
+這裡我們建立了一個 `add` function，它接受一個參數並回傳一個新的 function。當呼叫它後，回傳的 function 會透過 closure（閉包）的方式儲存 `add` 第一個參數。一次透過兩個參數呼叫實在是有點繁複，幸虧我們可以使用一個名為 `curry` 的特殊 helper function 讓定義並呼叫這種 function 變得更容易。
 
-Let's set up a few curried functions for our enjoyment.
+讓我們建立一些 curry function 來享受一下。
 
 ```js
 var curry = require('lodash/curry');
@@ -48,7 +48,7 @@ var map = curry(function(f, ary) {
 });
 ```
 
-The pattern I've followed is a simple, but important one. I've strategically positioned the data we're operating on (String, Array) as the last argument. It will become clear as to why upon use.
+上方程式碼所遵循的是一種簡單，但也重要的模式。這裡戰略性的將欲操作的資料（String，Array）作為最後一個參數傳入。當使用時就知道為何要這麼做了。
 
 ```js
 match(/\s+/g, 'hello world');
@@ -85,15 +85,15 @@ censored('Chocolate Rain');
 // 'Ch*c*l*t* R**n'
 ```
 
-What's demonstrated here is the ability to "pre-load" a function with an argument or two in order to receive a new function that remembers those arguments.
+這裡示範的是一種「pre-load（預先載入）」的能力，透過傳遞一至兩個參數，就能得到一個記住這些參數的新 function。
 
-I encourage you to `npm install lodash`, copy the code above and have a go at it in the repl. You can also do this in a browser where lodash or ramda is available.
+我建議你透過 `npm install lodash` 安裝 lodash，複製上方的程式碼至 REPL 執行看看。你也可以在能使用 lodash 或 ramda 的瀏覽器環境中執行。
 
-## More than a pun / special sauce
+## 不只是雙關語 / 咖哩
 
-Currying is useful for many things. We can make new functions just by giving our base functions some arguments as seen in `hasSpaces`, `findSpaces`, and `censored`.
+Curry 的用處非常廣泛。就像在 `hasSpaces`、`findSpaces` 及 `censored` 看到的，只需傳遞一些參數至 function，就能得到一個新的 function。
 
-We also have the ability to transform any function that works on single elements into a function that works on arrays simply by wrapping it with `map`:
+只要透過 `map` 封裝單一元素的 function，即可將它轉換成參數維陣列的 function：
 
 ```js
 var getChildren = function(x) {
@@ -103,7 +103,7 @@ var getChildren = function(x) {
 var allTheChildren = map(getChildren);
 ```
 
-Giving a function fewer arguments than it expects is typically called *partial application*. Partially applying a function can remove a lot of boiler plate code. Consider what the above `allTheChildren` function would be with the uncurried `map` from lodash (note the arguments are in a different order):
+只傳遞一部分參數至 function 通常稱做*部分應用（partial application）*，能夠大量減少樣板程式碼（boiler plate code）。考慮上方的 `allTheChildren` function 若使用 lodash 非 curry 的 `map` 來寫會如何（請注意參數的順序也不同）：
 
 ```js
 var allTheChildren = function(elements) {
@@ -111,53 +111,53 @@ var allTheChildren = function(elements) {
 };
 ```
 
-We typically don't define functions that work on arrays, because we can just call `map(getChildren)` inline. Same with `sort`, `filter`, and other higher order functions(Higher order function: A function that takes or returns a function).
+一般來說我們不會定義直接操作陣列的 function，因為我們只需要行內呼叫 `map(getChildren)` 即可。此點也同樣適用於 `sort`、`filter` 及其他高階 function（Higher order function：一個 function 使用或者是回傳另一個 function）。
 
-When we spoke about *pure functions*, we said they take 1 input to 1 output. Currying does exactly this: each single argument returns a new function expecting the remaining arguments. That, old sport, is 1 input to 1 output.
+當我們討論 *pure function* 時，我們會說它接受一個輸入並對應一個輸出。Curry 所做的事也是如此：每傳遞一個參數就會回傳一個新的 function 處理剩餘的參數。這就是一個輸入對應一個輸出。
 
-No matter if the output is another function - it qualifies as pure. We do allow more than one argument at a time, but this is seen as merely removing the extra `()`'s for convenience.
+不論輸出是否為另一個 function，它也是 pure function。我們也接受一次傳遞多個參數，不過這樣也只是為了方便減少多餘的 `()`。
 
 
-## In summary
+## 總結
 
-Currying is handy and I very much enjoy working with curried functions on a daily basis. It is a tool for the belt that makes functional programming less verbose and tedious.
+Curry 使用起來相當得心應手，每天使用它對我來說簡直是一種享受。它是一種必備的工具，讓 functional programming 不那麼繁冗。
 
-We can make new, useful functions on the fly simply by passing in a few arguments and as a bonus, we've retained the mathematical function definition despite multiple arguments.
+透過簡單的傳遞一些參數，就能夠動態的建立實用的新 function，即便有多個參數，也保留了數學 function 的定義。
 
-Let's acquire another essential tool called `compose`.
+讓我們來介紹另一個必備工具 `compose（組合）`
 
-[Chapter 5: Coding by Composing](ch5.md)
+[第 5 章：透過 Compose 開發](ch5.md)
 
-## Exercises
+## 練習
 
-A quick word before we start. We'll use a library called [Ramda](http://ramdajs.com) which curries every function by default. Alternatively you may choose to use [lodash/fp](https://github.com/lodash/lodash/wiki/FP-Guide) which does the same and is written/maintained by the creator of lodash. Both will work just fine and it is a matter of preference.
+在開始前先說明一下。我們預設會使用名為 [Ramda](http://ramdajs.com) 的 library 將 function 轉換為 curry function。或者你能使用由 lodash 撰寫與維護的 [lodash/fp](https://github.com/lodash/lodash/wiki/FP-Guide) 做到一樣的事。兩者都運作得相當好，你可以根據偏好做選擇。
 
-There are [unit tests](https://github.com/DrBoolean/mostly-adequate-guide/tree/master/code/part1_exercises) to run against your exercises as you code them, or you can just copy-paste into a javascript REPL for the early exercises if you wish.
+你還能對自己的練習程式碼進行[unit test（單元測試）](https://github.com/DrBoolean/mostly-adequate-guide/tree/master/code/part1_exercises)，或者只將程式碼複製到 javascript REPL 執行看看。
 
-Answers are provided with the code in the [repository for this book](https://github.com/DrBoolean/mostly-adequate-guide/tree/master/code/part1_exercises/answers). Best way to do the exercises is with an [immediate feedback loop](feedback_loop.md).
+練習的答案已經放在[本書的 repository](https://github.com/DrBoolean/mostly-adequate-guide/tree/master/code/part1_exercises/answers)。做本練習最佳方式就是透過[及時回饋環線（immediate feedback loop）](feedback_loop.md)。
 
 ```js
 var _ = require('ramda');
 
 
-// Exercise 1
+// 練習 1
 //==============
-// Refactor to remove all arguments by partially applying the function.
+// 透過部分套用（partially applying）重構此 function 移除所有參數。
 
 var words = function(str) {
   return _.split(' ', str);
 };
 
-// Exercise 1a
+// 練習 1a
 //==============
-// Use map to make a new words fn that works on an array of strings.
+// 使用 map 建立一個新的 words fn，讓它可以操作字串的陣列。
 
 var sentences = undefined;
 
 
-// Exercise 2
+// 練習 2
 //==============
-// Refactor to remove all arguments by partially applying the functions.
+// 透過部分套用（partially applying）重構此 function 移除所有參數。
 
 var filterQs = function(xs) {
   return _.filter(function(x) {
@@ -166,17 +166,16 @@ var filterQs = function(xs) {
 };
 
 
-// Exercise 3
+// 練習 3
 //==============
-// Use the helper function _keepHighest to refactor max to not reference any
-// arguments.
+// 使用 helper function _keepHighest 重構 max，讓它不需參考任何參數。
 
-// LEAVE BE:
+// 不需更動：
 var _keepHighest = function(x, y) {
   return x >= y ? x : y;
 };
 
-// REFACTOR THIS ONE:
+// 重構這段：
 var max = function(xs) {
   return _.reduce(function(acc, x) {
     return _keepHighest(acc, x);
@@ -184,16 +183,16 @@ var max = function(xs) {
 };
 
 
-// Bonus 1:
+// 加分題 1：
 // ============
-// Wrap array's slice to be functional and curried.
+// 封裝陣列的 slice 讓它變為 functional 的 curry function。
 // //[1, 2, 3].slice(0, 2)
 var slice = undefined;
 
 
-// Bonus 2:
+// 加分題 2：
 // ============
-// Use slice to define a function "take" that takes n elements from the beginning of the string. Make it curried.
-// // Result for "Something" with n=4 should be "Some"
+// 使用 slice 定義一個「take」function，讓它擷取字串從頭開始的的 n 個元素。此 function 必須為 curry function。
+// // 輸入「Something」且 n=4 時結果必須為「Some」
 var take = undefined;
 ```
