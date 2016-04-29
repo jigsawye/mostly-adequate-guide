@@ -24,7 +24,7 @@
   * [總結](ch5.md#in-summary)
 * [第 6 章：範例應用程式](ch6.md)
   * [宣告式開發](ch6.md#declarative-coding)
-  * [一個 functional programming 的 flickr](ch6.md#a-flickr-of-functional-programming)
+  * [一個 FP 的 flickr](ch6.md#a-flickr-of-functional-programming)
   * [有原則的重構](ch6.md#a-principled-refactor)
   * [總結](ch6.md#in-summary)
 * [第 7 章：Hindley-Milner 與我](ch7.md)
