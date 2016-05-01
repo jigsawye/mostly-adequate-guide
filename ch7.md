@@ -1,18 +1,18 @@
-# Chapter 7: Hindley-Milner and Me
+# 第 7 章：Hindley-Milner 與我
 
-## What's your type?
-If you're new to the functional world, it won't be long before you find yourself knee deep in type signatures. Types are the meta language that enables people from all different backgrounds to communicate succinctly and effectively. For the most part, they're written with a system called "Hindley-Milner", which we'll be examining together in this chapter.
+## 你的型別？
+如果你是第一次接觸到 functional programming，很容易深陷型別特徵（type signatures）的泥淖。類型是 meta 的語言，讓不同背景的人們可以簡潔有效的溝通。大多數情況下，他們寫了一個叫做「Hindley-Milner」的系統，我們會在這個章節研究這個系統。
 
-When working with pure functions, type signatures have an expressive power to which the English language cannot hold a candle. These signatures whisper in your ear the intimate secrets of a function. In a single, compact line, they expose behaviour and intention. We can derive "free theorems" from them. Types can be inferred so there's no need for explicit type annotations. They can be tuned to fine point precision or left general and abstract. They are not only useful for compile time checks, but also turn out to be the best possible documentation available. Type signatures thus play an important part in functional programming - much more than you might first expect.
+當使用 pure function 時，型別特徵在表達上強而有力，這是英文不能比擬的。這些簽名在你耳邊低語，告訴你 function 的祕密。簡單一行，就可以暴露 function 的行為和意圖。型別特徵衍生出了 「free theorems」 的定理。因為類型是可以推斷的，所以不需要顯式的類型註釋，不過你可以撰寫精確度很高的型別特徵，讓他們保持通用和抽象。型別特徵不只可以用在編譯時進行檢查，而且變成是最好可用的文件。因此型別特徵在 functional programming 扮演一個重要的角色 - 重要程度超越你的想像。
 
-JavaScript is a dynamic language, but that does not mean we avoid types all together. We're still working with strings, numbers, booleans, and so on. It's just that there isn't any language level integration so we hold this information in our heads. Not to worry, since we're using signatures for documentation, we can use comments to serve our purpose.
+JavaScript 是一門動態類型的語言，但這不代表我們要完全去避免所有類型。我們還是要使用到字串、數字、布林值等等。只不過，語言層面上沒有相關的集成讓我們時刻謹記各種資料類型。別擔心，因為我們使用簽名的文件，所以我們可以使用 comment 來達到這個目的。
 
-There are type checking tools available for JavaScript such as [Flow](http://flowtype.org/) or the typed dialect, [TypeScript](http://www.typescriptlang.org/). The aim of this book is to equip one with the tools to write functional code so we'll stick with the standard type system used across FP languages.
+JavaScript 也有一些類型檢查工具，像是 [Flow](http://flowtype.org/) 或是靜態類型的 [TypeScript](http://www.typescriptlang.org/)。由於本書目的是讓讀者使用工具去撰寫 functional 的程式碼，所以我們堅持使用跨 FP 語言的標準類型系統。
 
 
-## Tales from the cryptic
+## 神祕的傳奇故事
 
-From the dusty pages of math books, across the vast sea of white papers, amongst casual saturday morning blog posts, down into the source code itself, we find Hindley-Milner type signatures. The system is quite simple, but warrants a quick explanation and some practice to fully absorb the little language.
+從積塵已久的數學書籍，到浩如煙海的學術論文；不經意在週六上午看到的部落格文章，到原始碼本身，我們都能發現 Hindley-Milner 型別特徵的身影。Hindley-Milner 系統相當的簡單，但還是需要一些解釋和練習才能充分的掌握這個小語言的精髓。
 
 ```js
 //  capitalize :: String -> String
@@ -24,11 +24,11 @@ capitalize("smurf");
 //=> "Smurf"
 ```
 
-Here, `capitalize` takes a `String` and returns a `String`. Never mind the implementation, it's the type signature we're interested in.
+這裡，`capitalize` 接受一個 `String` 並回傳了一個 `String`。先不管如何實現，我們感興趣的的是它的型別特徵。
 
-In HM, functions are written as `a -> b` where `a` and `b` are variables for any type. So the signatures for `capitalize` can be read as "a function from `String` to `String`". In other words, it takes a `String` as its input and returns a `String` as its output.
+在 Hindley-Milner 系统中，function 都寫成像是 `a -> b` 這樣子，其中 `a` 和 `b` 是任意類型的變數。所以 `capitalize` 的簽名可以解讀為「一個接受 `String` function 回傳一個 `String`」。換句話說，接受一個 `String` 類型作為輸入，然後回傳一個 `String` 類型作為輸出。
 
-Let's look at some more function signatures:
+讓我們看更多 function 的簽名：
 
 ```js
 //  strLength :: String -> Number
@@ -52,11 +52,11 @@ var replace = curry(function(reg, sub, s) {
 });
 ```
 
-`strLength` is the same idea as before: we take a `String` and return you a `Number`.
+`strLength` 和 `capitalize` 類似，接受一個 `String` 然後回傳一個 `Number`。
 
-The others might perplex you at first glance. Without fully understanding the details, you could always just view the last type as the return value. So for `match` you can interpret as: It takes a `Regex` and a `String` and returns you `[String]`. But an interesting thing is going on here that I'd like to take a moment to explain if I may.
+至於其他的，第一次看起來可能會令人疑惑。不過在不了解的情況下，你可以把最後一個類型當作回傳值。所以 `match` 你可以解釋成：它接受一個 `Regex` 和一個 `String` 然後回傳 `[String]`。但是這裡有一個非常有趣的地方，稍後我會做解釋。
 
-For `match` we are free to group the signature like so:
+對於 `match` function，我們可以把它的型別特徵這樣分組：
 
 ```js
 //  match :: Regex -> (String -> [String])
@@ -65,7 +65,7 @@ var match = curry(function(reg, s) {
 });
 ```
 
-Ah yes, grouping the last part in parenthesis reveals more information. Now it is seen as a function that takes a `Regex` and returns us a function from `String` to `[String]`. Because of currying, this is indeed the case: give it a `Regex` and we get a function back waiting for its `String` argument. Of course, we don't have to think of it this way, but it is good to understand why the last type is the one returned.
+是的，最後括號內的分組揭露了更多的資訊，現在我們可以看到 `match` function 接受一個 `Regex` 然後回傳一個然後回傳一個 `String` 到 `[String]` function。因為 curry 的緣故，所以造成如此的結果：給 `match` function 一個 `Regex`，然後得到一個處理 `String` 參數的新 function。當然，我們不一定要這麼思考，但這樣思考可以幫助我們理解為什麼最後一個類型是回傳值。
 
 ```js
 //  match :: Regex -> (String -> [String])
@@ -74,7 +74,7 @@ Ah yes, grouping the last part in parenthesis reveals more information. Now it i
 var onHoliday = match(/holiday/ig);
 ```
 
-Each argument pops one type off the front of the signature. `onHoliday` is `match` that already has a `Regex`.
+每傳一個參數，就會彈出型別特徵最前面的那個類型。所以 `onHoliday` 就是已經有了 `Regex` 參數的 `match`
 
 ```js
 //  replace :: Regex -> (String -> (String -> String))
@@ -83,9 +83,9 @@ var replace = curry(function(reg, sub, s) {
 });
 ```
 
-As you can see with the full parenthesis on `replace`, the extra notation can get a little noisy and redundant so we simply omit them. We can give all the arguments at once if we choose so it's easier to just think of it as: `replace` takes a `Regex`, a `String`, another `String` and returns you a `String`.
+正如你所見的所有在，在 `replace` 外加上這麼多括號未免有些多餘，這裡的括號是可以省略的。如果可以的話，我們可以一次將所有參數傳入：`replace` 帶有一個 `Regex`、`String` 和另一個 `String`，回傳的還是一個 `String`。
 
-A few last things here:
+這裡有最後幾件事情：
 
 
 ```js
@@ -100,15 +100,15 @@ var map = curry(function(f, xs) {
 });
 ```
 
-The `id` function takes any old type `a` and returns something of the same type `a`. We're able to use variables in types just like in code. Variable names like `a` and `b` are convention, but they are arbitrary and can be replaced with whatever name you'd like. If they are the same variable, they have to be the same type. That's an important rule so let's reiterate: `a -> b` can be any type `a` to any type `b`, but `a -> a` means it has to be the same type. For example, `id` may be `String -> String` or `Number -> Number`, but not `String -> Bool`.
+`id` function 接受任何類型的 `a`，並回傳相同類型的 `a`。我們可以在程式中使用類型的變數。變數名稱像是 `a` 和 `b` 只是一個慣例，但是他們可以任意被替換成你想要的名稱。如果它們是相同的變數，它們必須視同一個類型。這是很重要的規則，讓我們重申：`a -> b` 可以是任何的類型 `a` 到 任何類型 `b`，但是 `a -> a` 必須是要相同的類型。例如，`id` 可能是 `String -> String` 或 `Number -> Number`，而不是 `String -> Bool`。
 
-`map` similarly uses type variables, but this time we introduce `b` which may or may not be the same type as `a`. We can read it as: `map` takes a function from any type `a` to the same or different type `b`, then takes an array of `a`'s and results in an array of `b`'s.
+`map` 同樣的使用了類型變數，但是這裡的 `b` 可能與類型 `a` 相同，也可能不同。我們可以這樣解讀：`map` 接受兩個參數，第一個是任意類型 `a` 到任意類型 `b` 的 function；第二個是一個陣列，元素是任意類型的 `a`；`map` 最後回傳的是一個 `b` 類型的陣列。
 
-Hopefully, you've been overcome by the expressive beauty in this type signature. It literally tells us what the function does almost word for word. It's given a function from `a` to `b`, an array of `a`, and it delivers us an array of `b`. The only sensible thing for it to do is call the bloody function on each `a`. Anything else would be a bold face lie.
+型別特徵的美妙令人印象深刻，希望你已經被他深深吸引。型別特徵從字面上告訴我們 function 做了哪些事情。給定一個從 `a` 到 `b` 的 function 和一個 `a` 的陣列作為參數，然後回傳一個 `b` 的陣列。`map` 唯一的明智之舉就是使用 function 去呼叫每一個 `a`，其他的操作都是多餘的。
 
-Being able to reason about types and their implications is a skill that will take you far in the functional world. Not only will papers, blogs, docs, etc, become more digestible, but the signature itself will practically lecture you on its functionality. It takes practice to become a fluent reader, but if you stick with it, heaps of information will become available to you sans RTFMing.
+辨別類型和它們的含義是一項重要的技能，這項技能可以讓你在 functional programming 的路上走得更遠。不只是論文、部落格、文件等等其他可以更容易理解，型別特徵本身基本上也能夠告訴你他的函式性（functionality）。要成為能夠熟練型別特徵的人，你必須要勤於練習；不過如果堅持下去，你將受益無窮。
 
-Here's a few more just to see if you can decipher them on your own.
+這裡還有些例子，你可以試試看能不能理解它們。
 
 ```js
 //  head :: [a] -> a
@@ -127,34 +127,34 @@ var reduce = curry(function(f, x, xs) {
 });
 ```
 
-`reduce` is perhaps, the most expressive of all. It's a tricky one, however, so don't feel inadequate should you struggle with it. For the curious, I'll try to explain in English though working through the signature on your own is much more instructive.
+`reduce` 也許是型別特徵中最具表現力的一個，但同時也是最複雜的一個，如果在理解它感到困難的話，也不要氣餒。為了滿足你的好奇心，我會嘗試去解釋，儘管我的解釋遠遠不如你自已去理解型別特徵來的有效。
 
-Ahem, here goes nothing....looking at the signature, we see the first argument is a function that expects a `b`, an `a`, and produces a `b`. Where might it get these `a`s and `b`s? Well, the following arguments in the signature are a `b` and an array of `a`s so we can only assume that the `b` and each of those `a`s will be fed in. We also see that the result of the function is a `b` so the thinking here is our final incantation of the passed in function will be our output value. Knowing what reduce does, we can state that the above investigation is accurate.
+咳咳，這裡不保證完全正確...注意到 `reduce` 的簽名，可以看到第一個參數是 function，接受一個 `b` 和 `a` 然後產生一個 `b`，那麼這些 `a` 和 `b` 是哪裡來的呢？很簡單，在簽名中的第二個和第三個參數就是 `b` 和 `a` 陣列，所以唯一合理的假設就是這裡的 `b` 和每一個 `a` 都將前面的 function 作為參數。我們也可以看到 reduce function 的最後回傳的結果是一個 `b`，也就是說 `reduce` 的第一個參數 function 就是 `reduce` function 的輸出。知道了 `reduce` 的含義，我們才敢說上面關於型別特徵的推理是正確的。
 
 
-## Narrowing the possibility
+## 縮小可能性範圍
 
-Once a type variable is introduced, there emerges a curious property called *parametricity*(http://en.wikipedia.org/wiki/Parametricity). This property states that a function will *act on all types in a uniform manner*. Let's investigate:
+一旦引入了類型變數，就會出現一個奇怪的特性叫做 *parametricity*(http://en.wikipedia.org/wiki/Parametricity)。這個特性狀態表示一個 function 會*以一種統一的行為作用於所有的類型*。讓我們來探討：
 
 ```js
 // head :: [a] -> a
 ```
 
-Looking at `head`, we see that it takes `[a]` to `a`. Besides the concrete type `array`, it has no other information available and, therefore, its functionality is limited to working on the array alone. What could it possibly do with the variable `a` if it knows nothing about it? In other words, `a` says it cannot be a *specific* type, which means it can be *any* type, which leaves us with a function that must work uniformly for *every* conceivable type. This is what *parametricity* is all about. Guessing at the implementation, the only reasonable assumptions are that it takes the first, last, or a random element from that array. The name `head` should tip us off.
+注意到 `head`，它接受一個 `[a]` 然後回傳 `a`。除了知道參數是一個 `array` 外，其他的我們一概不知，所以，function 的操作只限於在這個陣列。在它對 `a` 一無所知的情況下，它能對 `a` 做什麼呢？換句話說，`a` 表示它沒有*指定*的類型，意思說他可是*任意*的類型，那麼我們對*每一個* function 的處理都必須保持一致。這就是關於 *parametricity* 的涵義。要讓我們來猜測 `head` 的實現的話，唯一合理的推斷就是它回傳陣列的第一個，或者最後一個，或者某個隨機的元素；當然，`head` 這個命名應該能給我們一些線索。
 
-Here's another one:
+這裡有另一個例子：
 
 ```js
 // reverse :: [a] -> [a]
 ```
 
-From the type signature alone, what could `reverse` possibly be up to? Again, it cannot do anything specific to `a`. It cannot change `a` to a different type or we'd introduce a `b`. Can it sort? Well, no, it wouldn't have enough information to sort every possible type. Can it re-arrange?  Yes, I suppose it can do that, but it has to do so in exactly the same predictable way. Another possibility is that it may decide to remove or duplicate an element. In any case, the point is, the possible behaviour is massively narrowed by its polymorphic type.
+只從型別特徵來看，`reverse` 的目的可能是什麼？它不能對 `a` 做任何特定的事情。它不能把 `a` 類型改變成其他類型，或者引入一個 `b`。那麼它可以排序嗎？答案是不行的，它沒有足夠的資訊去排序每個可能的類型。它可以重新排列嗎？可以的，我覺得它可以，但它必須以一種可預測的方式達成。另一種可能性是，它可能會刪除或重複某個元素。重點是，不管在哪種情況下，類型 a 的多態性（polymorphism）都會大幅縮小 reverse 函數可能的行為的範圍。
 
-This narrowing of possibility allows us to use type signature search engines like [Hoogle](https://www.haskell.org/hoogle) to find a function we're after. The information packed tightly into a signature is quite powerful indeed.
+這種「可能性範圍的縮小」（narrowing of possibility）允許我們利用類似 [Hoogle](https://www.haskell.org/hoogle) 這樣的型別特徵搜尋引擎去搜索我們想要的 function。 型別特徵所能包含的資訊量真的非常大。
 
-## Free as in theorem
+## 自由定理
 
-Besides deducing implementation possibilities, this sort of reasoning gains us *free theorems*. What follows are a few random example theorems lifted directly from [Wadler's paper on the subject](http://ttic.uchicago.edu/~dreyer/course/papers/wadler.pdf).
+型別特徵除了能夠説明我們推斷函數可能的實現，還能夠給我們帶來*自由定理*（free theorems）。下面是兩個直接從[Wadler 關於此主題的論文](http://ttic.uchicago.edu/~dreyer/course/papers/wadler.pdf)中隨機播放的例子。
 
 ```js
 // head :: [a] -> a
@@ -165,35 +165,35 @@ compose(map(f), filter(compose(p, f))) === compose(filter(p), map(f));
 ```
 
 
-You don't need any code to get these theorems, they follow directly from the types. The first one says that if we get the `head` of our array, then run some function `f` on it, that is equivalent to, and incidentally, much faster than, if we first `map(f)` over every element then take the `head` of the result.
+你不需要任何程式碼也能了解這些定理，它們直接來自於類型本身。第一個意思是說如果我們要取得陣列的 `head`，然後執行 function `f`，這相等且相較於如果我們第一次使用 `map(f)` 來取得每個元素 `head` 的結果來的要快。
 
-You might think, well that's just common sense. But last I checked, computers don't have common sense. Indeed, they must have a formal way to automate these kind of code optimizations. Maths has a way of formalizing the intuitive, which is helpful amidst the rigid terrain of computer logic.
+你可能會想，這些都只是常識。但是根據我的調查，電腦是沒有常識的。Indeed, 實際上，它們必須有正市的方式來自動化類似這些程式碼的優化。數學提供了這種方法，能夠形式化直觀的感覺，這對死板的電腦邏輯非常有用。
 
-The `filter` theorem is similar. It says that if we compose `f` and `p` to check which should be filtered, then actually apply the `f` via `map` (remember filter, will not transform the elements - its signature enforces that `a` will not be touched), it will always be equivalent to mapping our `f` then filtering the result with the `p` predicate.
+它說如果我們 compose `f` 和 `p` 來確認那些應該被過濾，然後實際上經由 `map` 來使用 `f`（別忘了 filter 是不會改變陣列的元素，這就保證 `a` 是保持不變），這會相等於 `map` 我們的 `f` 然後根據 `p` 過濾結果。
 
-These are just two examples, but you can apply this reasoning to any polymorphic type signature and it will always hold. In JavaScript, there are some tools available to declare rewrite rules. One might also do this via the `compose` function itself. The fruit is low hanging and the possibilities are endless.
+以上只是兩個例子，但你可以將這種推理應用到任何多態型別特徵。在 JavaScript，有一些工具可用來宣告重寫規則。一個可能就是藉由 `compose` function 本身。總之，這麼做的好處是顯而易見且唾手可得的，可能性則是無限的。
 
-## Constraints
+## 類型約束
 
-One last thing to note is that we can constrain types to an interface.
+最後要注意的一點是，簽名也可以把類型約束為一個特定的介面（interface）。
 
 ```js
 // sort :: Ord a => [a] -> [a]
 ```
 
-What we see on the left side of our fat arrow here is the statement of a fact: `a` must be an `Ord`. Or in other words, `a` must implement the `Ord` interface. What is `Ord` and where did it come from? In a typed language it would be a defined interface that says we can order the values. This not only tells us more about the `a` and what our `sort` function is up to, but also restricts the domain. We call these interface declarations *type constraints*.
+fat arrow 左邊表明這是一個事實：`a` 一定是個 `Ord` 物件。或是換句話說，`a` 必須實作 `Ord` 介面。`Ord` 是什麼，它從哪來的？在一門強型別語言中，它可能就是一個自訂的介面，能夠讓不同的值排序。這不僅告訴我們更多關於 `a` 資訊和 `sort` function 具體是在做什麼，而且還能限制函數的作用範圍。我們稱這種介面宣告叫*類型約束*。
 
 ```js
 // assertEqual :: (Eq a, Show a) => a -> a -> Assertion
 ```
 
-Here, we have two constraints: `Eq` and `Show`. Those will ensure that we can check equality of our `a`s and print the difference if they are not equal.
+這裡我們有兩個約束：`Eq` 和 `Show`。它們確保我們可以檢查不同的 `a` 是否相等，並在有不相等的情況下列印出其中的差異。
 
-We'll see more examples of constraints and the idea should take more shape in later chapters.
+我們將會在後面的章節中看到更多類型約束的例子，其含義也會更加清晰。
 
 
-## In Summary
+## 總結
 
-Hindley-Milner type signatures are ubiquitous in the functional world. Though they are simple to read and write, it takes time to master the technique of understanding programs through signatures alone. We will add type signatures to each line of code from here on out.
+Hindley-Milner 類型在 functional programming 的世界無所不在。它們簡單易讀，撰寫也不複雜，但僅僅憑簽名就能理解整個程式還是有一定難度的，要想精通這個技術就更需要花點時間了。 從這開始，我們將在每一行程式碼都加上型別特徵。
 
-[Chapter 8: Tupperware](ch8.md)
+[第八章：Tupperware](ch8.md)
