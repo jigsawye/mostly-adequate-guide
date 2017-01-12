@@ -169,7 +169,7 @@ squareNumber(4); // 回傳輸入為 4 的快取結果
 squareNumber(5);
 //=> 25
 
-squareNumber(5); // 回傳輸入為 4 的快取結果
+squareNumber(5); // 回傳輸入為 5 的快取結果
 //=> 25
 ```
 
@@ -249,7 +249,7 @@ var welcomeUser = function(Email, user) {
 
 在 JavaScript 設定中，可移植性代表可將 function serializing（序列化）並透過 socket 傳動。也可以表示程式碼能夠在所有的 app worker 中執行。總之，可移植性是一個相當強大的特性。
 
-Imperative programming 中「典型」的方式與過程都深深的根值在他們的環境中，透過狀態、依賴即有效作用（available effects）達成；Pure function 則與此相法，只要我們願意，可以在任何地方執行它。
+Imperative programming 中「典型」的方式與過程都深深的根值在他們的環境中，透過狀態、依賴即有效作用（available effects）達成；Pure function 則與此相反，只要我們願意，可以在任何地方執行它。
 
 你上一次將類別方法複製到新的 app 中是何時？我最喜歡的名言是 Erlang 的作者 Joe Armstrong 所說的一句話：「物件導向語言的問題在於，它們隨身攜帶那些癮式的環境。你只要一根香蕉，但卻得到一個拿著香蕉的大猩猩⋯以及整片叢林」。
 
@@ -296,7 +296,7 @@ punch(jobe, michael);
 //=> Immutable.Map({name:'Michael', hp:19, team: 'green'})
 ```
 
-`decrementHP`、`isSameTeam` 及 `punch` 都是 pure function，所以是引用透明的。我們可以透過一種稱做為*等式推導（equational reasoning）*的技術來分析程式碼，這技術就是就是以「一對一」進行替換，有點像是在不考慮程式性執行的怪異行為的情況下，手動執行相關程式碼。我們借助引用透明性來解析這段程式碼。
+`decrementHP`、`isSameTeam` 及 `punch` 都是 pure function，所以是引用透明的。我們可以透過一種稱做為*等式推導（equational reasoning）*的技術來分析程式碼，這技術就是以「一對一」進行替換，有點像是在不考慮程式性執行的怪異行為的情況下，手動執行相關程式碼。我們借助引用透明性來解析這段程式碼。
 
 首先我們將 `isSameTeam` function 替換。
 
