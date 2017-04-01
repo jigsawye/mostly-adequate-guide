@@ -91,7 +91,7 @@ add(x, y) === add(y, x);
 // 同一律（identity）
 add(x, 0) === x;
 
-// 分配綠（distributive）
+// 分配律（distributive）
 multiply(x, add(y,z)) === add(multiply(x, y), multiply(x, z));
 ```
 
