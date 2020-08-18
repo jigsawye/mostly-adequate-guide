@@ -56,7 +56,7 @@ var checkAge = function(age) {
 
 在 impure 的版本中，`checkAge` 的結果將取決於 `minimum` 這個可變變數。換句話說，他將取決於系統狀態；這點令人失望，因為它引用了外部的環境，從而增加了認知負擔。
 
-這個例子可能還不是那麼明顯，但這種依賴狀態是影響系統複雜度的罪魁禍首（http://www.curtclifton.net/storage/papers/MoseleyMarks06a.pdf）。輸入值之外的因素能夠左右 `checkAge` 的回傳值，不僅讓他變得不符合 pure，還導致每次我思考整個軟體時都痛苦不堪。
+這個例子可能還不是那麼明顯，但這種依賴狀態是影響系統複雜度的罪魁禍首（<http://www.curtclifton.net/storage/papers/MoseleyMarks06a.pdf>）。輸入值之外的因素能夠左右 `checkAge` 的回傳值，不僅讓他變得不符合 pure，還導致每次我思考整個軟體時都痛苦不堪。
 
 另一方面，使用 pure 的形式就能做到完全自給自足。我們可以讓 `minimum` 變為 immutable（不可變的），這樣就可保留純粹性，因為狀態不會有變化。我們可以建立一個 object 並 freeze 它來做到這件事。
 
