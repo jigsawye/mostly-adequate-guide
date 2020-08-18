@@ -5,7 +5,7 @@
 
 Curry 的概念很簡單：你可以只透過部分的參數呼叫一個 function，它會回傳一個 function 去處理剩下的參數。
 
-你可以一次性的呼叫 curry function，也可以每次只傳遞每次只傳遞一個參數。
+你可以一次性的呼叫 curry function，也可以每次只傳遞一個參數。
 
 ```js
 var add = function(x) {
