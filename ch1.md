@@ -6,7 +6,7 @@
 
 我不假設你之前有任何 functional programming 的知識，我們都知道假設的後果是什麼。但我猜想你在使用可變狀態（mutable state）、不受限的副作用（unrestricted side effects）及無原則設計（unprincipled design）的過程中已經遇過一些麻煩。現在我們已經介紹的差不多了，接著讓我們切入正題吧。
 
-本章節的目的是讓你了解為何我們要撰寫 functional 的程式。我們必須了解為何讓讓一個程式 *functional*，否則我們會發現自己漫無目的的避免使用物件－無疑是在做白工。寫程式時需要遵照一定的原則，就像在《激戰》遊戲中當水變成石頭時你需要天國羅盤來指引。
+本章節的目的是讓你了解為何我們要撰寫 functional 的程式。我們必須了解如何讓程式 *functional*，否則我們會發現自己漫無目的的避免使用物件－無疑是在做白工。寫程式時需要遵照一定的原則，就像在《激戰》遊戲中當水變成石頭時你需要天國羅盤來指引。
 
 現在已經有一些通用的程式開發原則－各種縮寫詞帶領我們在應用程式的黑暗隧道中前進：DRY（don't repeat yourself，不重複程式），YAGNI（ya ain't gonna need it，你不會需要它），高內聚低耦合（loose coupling high cohesion），最少意外原則（principle of least surprise），單一責任原則（single responsibility）等等。
 
